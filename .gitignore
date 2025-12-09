@@ -1,0 +1,20 @@
+# Node
+node_modules/
+npm-debug.log
+
+# Expo / React Native
+.expo/
+.expo-shared/
+dist/
+build/
+
+# Environment variables
+.env
+.env.local
+
+# macOS
+.DS_Store
+
+# Logs
+logs/
+*.log

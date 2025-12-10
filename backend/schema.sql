@@ -46,3 +46,10 @@ create table if not exists public.messages (
   body text not null,
   created_at timestamp with time zone default now()
 );
+-- RLS Policies (Dev mode)
+
+/* Institutions: allow read to any role (dev-only) */
+create policy "Allow read institutions to anyone (dev)"
+on public.institutions
+for select
+using (true);

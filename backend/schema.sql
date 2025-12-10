@@ -109,3 +109,19 @@ begin
   end if;
 end;
 $$;
+create table if not exists public.ombuds_otp (
+  id uuid primary key default gen_random_uuid(),
+  ombuds_id uuid references public.ombuds_users(id) on delete cascade,
+  otp_code text not null,
+  expires_at timestamp with time zone not null,
+  created_at timestamp with time zone default now()
+);
+
+-- RLS: Ombuds can only see their own OTP row
+alter table public.ombuds_otp enable row level security;
+
+create policy "ombuds read own otp"
+  on public.ombuds_otp
+  for select
+  to authenticated
+  using (ombuds_id = auth.uid());

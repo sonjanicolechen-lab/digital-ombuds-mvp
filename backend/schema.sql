@@ -53,3 +53,32 @@ create policy "Allow read institutions to anyone (dev)"
 on public.institutions
 for select
 using (true);
+/* Dev policies for early development: DO NOT USE IN PRODUCTION */
+
+/* Visitors: allow all access in dev */
+create policy "Dev access visitors"
+on public.visitors
+for all
+using (true)
+with check (true);
+
+/* Cases: allow all access in dev */
+create policy "Dev access cases"
+on public.cases
+for all
+using (true)
+with check (true);
+
+/* Messages: allow all access in dev */
+create policy "Dev access messages"
+on public.messages
+for all
+using (true)
+with check (true);
+
+/* Ombuds users: allow all access in dev */
+create policy "Dev access ombuds_users"
+on public.ombuds_users
+for all
+using (true)
+with check (true);

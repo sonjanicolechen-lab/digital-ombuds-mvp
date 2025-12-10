@@ -82,3 +82,30 @@ on public.ombuds_users
 for all
 using (true)
 with check (true);
+-- Function: authenticate_ombuds(email, password)
+create or replace function public.authenticate_ombuds(email text, password text)
+returns uuid
+language plpgsql
+security definer
+as $$
+declare
+  ombuds_id uuid;
+  stored_hash text;
+begin
+  select id, password_hash
+    into ombuds_id, stored_hash
+    from public.ombuds_users
+    where ombuds_users.email = authenticate_ombuds.email;
+
+  if ombuds_id is null then
+    return null;
+  end if;
+
+  -- Compare hash
+  if crypt(password, stored_hash) = stored_hash then
+    return ombuds_id;
+  else
+    return null;
+  end if;
+end;
+$$;

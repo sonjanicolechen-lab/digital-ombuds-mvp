@@ -271,3 +271,43 @@ App includes disclaimer:
 ---
 
 # End of MVP Requirements Document v1.0
+## 10. MVP Message Flow Contract
+
+This section defines the exact data exchange between the Visitor Mobile App, Backend, and Ombuds Desktop.
+
+### Visitor → Backend
+On first submission, the mobile app sends:
+
+- institution_slug
+- role (student / staff / faculty)
+- message_text (string)
+- recovery_key_hash
+
+Backend creates:
+- visitor record
+- case record (status = "new")
+- message record (sender = "visitor")
+
+### Backend → Ombuds Dashboard
+Dashboard queries:
+- cases where institution_id matches ombuds_user.institution_id
+- status IN ("new", "active")
+
+Displayed per case:
+- alias
+- role
+- last_message_timestamp
+
+### Ombuds → Backend
+Ombuds sends:
+- case_id
+- message_text
+
+Backend:
+- inserts message (sender = "ombuds")
+- updates case.status = "active"
+
+### Backend → Visitor
+Visitor fetches:
+- messages by case_id
+- ordered by created_at
